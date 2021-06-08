@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="#">
+  <title>My Library</title>
+  <meta charset="UTF-8"/>
+
+
+  <style>
+    .myForm{
+      /*(display: none;*/
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    .form-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+
+
+
+  </head>
+<body >
+  <div class="container">
+    <div class="text">
+      <h1>My Book Library</h1>
+      <p>This is an application which allows you to store information about the books you have read.</p>
+      <p>You have two options: 1) Local Storage, 2) Cloud Storage</p>
+    </div>
+    <div class="storage">
+      <input class="local" type="button" value="Local">
+      <input class="cloud" type="button" value="Storage">
+    </div>
+    <div class="addItemDiv">
+      <input class="addItem" type="button" value="Add Item">
+    </div>
+      <!-- The Form -->
+      <div id="myForm" class="myForm">
+
+        <!-- Form content -->
+        <div class="form-content">
+          <span class="close">&times;</span>
+          <form class="theForm">
+            <label for="ltitle">Title</label><br>
+            <input type="text" class="title" name="ltitle" value=""><br><br>
+            <label for="lauthor">Author</label><br>
+            <input type="text" class="author" name="lauthor" value=""><br><br>
+            <label for="lpages">Pages</label><br>
+            <input type="text" class="pages" name="lpages" value=""><br><br>
+            <label for="lread">Read</label><br>
+            <input type="text" class="read" name="lread" value=""><br><br>
+            <input type="submit" class="subbtn" value="Submit">
+          </form> 
+        </div>
+
+      </div>
+    
+
+
+    <table class="outputData">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Pages</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        
+        <tr>
+          <td><input type="checkbox" name="name1" />&nbsp;</td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+    <input class="disp" type="button" value="Display">
+
+
+
+  </div>
+
+
+
+
+
+
+
+      
+
+
+    <script src=script.js>
+
+
+    </script> 
+
+  </body>
+
+
+</html>
