@@ -8,11 +8,20 @@
 
 
   <style>
+    html, body{
+      display: flex;
+      font: sans-serif;
+    }
+
+    .container{
+      display: flex;
+      flex-direction: column;
+    }
     .myForm{
-      /*(display: none;*/
+      display: none;
       position: fixed; /* Stay in place */
-      z-index: 1; /* Sit on top */
-      padding-top: 100px; /* Location of the box */
+      z-index: 1;  /*Sit on top */ 
+      padding-top: 400px; /* Location of the box */
       left: 0;
       top: 0;
       width: 100%; /* Full width */
@@ -44,6 +53,10 @@
       text-decoration: none;
       cursor: pointer;
     }
+
+    .rem{
+      display: none;
+    }
   </style>
 
 
@@ -61,7 +74,9 @@
       <input class="cloud" type="button" value="Storage">
     </div>
     <div class="addItemDiv">
-      <input class="addItem" type="button" value="Add Item">
+      <!--<input class="addItem" type="button" value="Add Item">-->
+      <a title="Add Item" href="#"><img id="addItem" class="addItem" src="Plus.png" style="width:25px;height:25px;" ></a>
+      
     </div>
       <!-- The Form -->
       <div id="myForm" class="myForm">
@@ -69,7 +84,7 @@
         <!-- Form content -->
         <div class="form-content">
           <span class="close">&times;</span>
-          <form class="theForm">
+          <form class="theForm" onsubmit="return false;">
             <label for="ltitle">Title</label><br>
             <input type="text" class="title" name="ltitle" value=""><br><br>
             <label for="lauthor">Author</label><br>
@@ -94,21 +109,24 @@
           <th>Author</th>
           <th>Pages</th>
           <th>Status</th>
+          <th></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="tableBody">
 
         
-        <tr>
+        <!--<tr class="tRow">
           <td><input type="checkbox" name="name1" />&nbsp;</td>
-        </tr>
+          <td>hello</td>
+        </tr>-->
+
 
       </tbody>
 
     </table>
 
     <input class="disp" type="button" value="Display">
-
+    <input class="rem" type="button" value="Remove">
 
 
   </div>
@@ -122,7 +140,7 @@
       
 
 
-    <script src=script.js>
+    <script src=script_LS.js>
 
 
     </script> 
