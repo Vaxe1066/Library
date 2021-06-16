@@ -103,6 +103,10 @@ function addBookToLibrary(myLibrary) {
   const span = document.querySelector(".close");
   const submitBut = document.querySelector(".subbtn")
   
+  
+  const EmyForm = document.querySelector(".EmyForm");
+  const EsubmitBut = document.querySelector(".Esubbtn");
+  const Espan = document.querySelector(".Eclose");
 
   myBut.addEventListener("click", () =>{
     myForm.style.display = "block";
@@ -111,6 +115,10 @@ function addBookToLibrary(myLibrary) {
   span.addEventListener("click", () =>{
     myForm.style.display = "none";
   })
+
+
+
+
 
   function remove() {
     const checkboxes = document.querySelectorAll('.checkbox:checked');
@@ -128,7 +136,7 @@ function addRemButton(){
     checkbox.addEventListener("change", ()=>{
      if(checkbox.checked){
        removeBut.style.display = "block";
-       console.log(checkbox.parentElement.className);
+
       }
     })
     
@@ -156,18 +164,23 @@ function addRemButton(){
 
   })
 
-  function addRow(myLibrary){
+  function addRow(item){
 
     const bodyEl = document.querySelector('.tableBody');
     const trEl = document.createElement('tr');
 
-    
+    if(!myLibrary.length){
+        trEl.classList.add("td_0");
+      }
+      else {
+        trEl.classList.add("td_" + myLibrary.length)
+      }
     
 
     for(let i=0; i<6; ++i){
       //const trEl = document.querySelector('.tRow');
       const newtd = document.createElement('td');
-      newtd.classList.add("td_" + myLibrary.length)
+      
 
       if(i==0){
         const inputEl = document.createElement('input');
@@ -190,6 +203,7 @@ function addRemButton(){
       }
       else if(i==4){
         newtd.textContent = readText(item.read);
+        //newtd.textContent = item.read;
         trEl.appendChild(newtd);
       }
       else if(i==5){
@@ -212,6 +226,8 @@ function addRemButton(){
 
   }
 
+
+
   submitBut.addEventListener("click", () => {
     item = addBookToLibrary(myLibrary);
     addRow(item);
@@ -219,13 +235,38 @@ function addRemButton(){
     let res = document.querySelector("form").reset();
     myForm.style.display = "none";
     addRemButton();
-    const editButtonEl = document.querySelector("._0");
-    editButtonEl.addEventListener("click", ()=>{
-      myForm.style.display = "block";
-    })
+    editRow();
 
   
   })
+
+function editRow(){
+    const editButtonEl = document.querySelector("._1");
+    editButtonEl.addEventListener("click", ()=>{
+      EmyForm.style.display = "block";
+    
+      let par = editButtonEl.parentElement;
+      let idx = Number(par.className.replace(/\D+/g, ''));
+      console.log(idx);
+      
+  
+      let Etitle = document.querySelector(".Etitle");
+      let Eauthor = document.querySelector(".Eauthor");
+      let Epages  = document.querySelector(".Epages");
+      let Eread = document.querySelector(".Eread");
+
+      Etitle.value = myLibrary[idx-1].title;
+      Eauthor.value =  myLibrary[idx-1].author;
+      Epages.value  =  myLibrary[idx-1].pages;
+      Eread.value = myLibrary[idx-1].read;
+  
+      const Espan = document.querySelector(".Eclose");
+      Espan.addEventListener("click", () =>{
+        EmyForm.style.display = "none";
+      })
+    })
+}
+
 
 
 

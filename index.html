@@ -17,7 +17,7 @@
       display: flex;
       flex-direction: column;
     }
-    .myForm{
+    .myForm, .EmyForm{
       display: none;
       position: fixed; /* Stay in place */
       z-index: 1;  /*Sit on top */ 
@@ -31,7 +31,8 @@
       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     }
 
-    .form-content {
+
+    .form-content, .Eform-content {
       background-color: #fefefe;
       margin: auto;
       padding: 20px;
@@ -39,8 +40,10 @@
       width: 80%;
     }
 
+
+
     /* The Close Button */
-    .close {
+    .close, .Eclose {
       color: #aaaaaa;
       float: right;
       font-size: 28px;
@@ -48,7 +51,9 @@
     }
 
     .close:hover,
-    .close:focus {
+    .close:focus,
+    .Eclose:hover,
+    .Eclose:focus  {
       color: #000;
       text-decoration: none;
       cursor: pointer;
@@ -99,6 +104,25 @@
 
       </div>
     
+      <div id="EmyForm" class="EmyForm">
+
+        <!-- Form content -->
+        <div class="Eform-content">
+          <span class="Eclose">&times;</span>
+          <form class="EtheForm" onsubmit="return false;">
+            <label for="Eltitle">Title</label><br>
+            <input type="text" class="Etitle" name="ltitle" value=""><br><br>
+            <label for="Elauthor">Author</label><br>
+            <input type="text" class="Eauthor" name="Elauthor" value=""><br><br>
+            <label for="Elpages">Pages</label><br>
+            <input type="text" class="Epages" name="Elpages" value=""><br><br>
+            <label for="Elread">Read</label><br>
+            <input type="text" class="Eread" name="Elread" value=""><br><br>
+            <input type="submit" class="Esubbtn" value="Submit">
+          </form> 
+        </div>
+
+      </div>
 
 
     <table class="outputData">
