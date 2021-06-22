@@ -44,16 +44,16 @@ function Book(title, author, pages, read){
     this.author = author
     this.pages=pages
     this.read=read
-    readText = function() {
+    /*readText = function() {
         if(read=="1"){
             return "Read";
         }
         else{
             return "Not Read Yet";
         }
-    }
+    }*/
     this.info = function(){
-        return `${title} by ${author}, ${pages} pages, ${readText()}`;
+        return `${title} by ${author}, ${pages} pages, ${read}`;
     }
 }
 
@@ -62,10 +62,13 @@ function Book(title, author, pages, read){
 
 
 function addBookToLibrary(myLibrary) {
+  
     let title= document.querySelector(".title").value;
     let author = document.querySelector(".author").value;
     let pages = document.querySelector(".pages").value;
-    let read = document.querySelector(".read").value;
+    //let e = document.querySelector("#readstatus");
+    //let read = e.options[e.selectedIndex].text;
+   let read = document.querySelector(".read").value;
     let item = new Book(title, author, pages, read);
     myLibrary.push(item);
     return item;
@@ -73,9 +76,37 @@ function addBookToLibrary(myLibrary) {
   }
 
 
-  function displayT(myLibrary){
-      for(let i=0; i<myLibrary.length; ++i){
+  function addBookToLibraryEdit(myLibrary, idx) {
+    let title= document.querySelector(".Etitle").value;
+    let author = document.querySelector(".Eauthor").value;
+    let pages = document.querySelector(".Epages").value;
+    //let e = document.querySelector("#Ereadstatus");
+    //let read = e.options[e.selectedIndex].text;
+    let read = document.querySelector(".Eread").value;
+    let item = new Book(title, author, pages, read);
+    myLibrary[idx] = item;
+    return item;
+    
+  }
+
+
+  function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
+
+  function displayT(){
+      /*for(let i=0; i<myLibrary.length; ++i){
            console.log((myLibrary[i].info()));
+      }*/
+      const containerRem = document.querySelector('.tableBody');
+      removeAllChildNodes(containerRem);
+
+
+      for(let j=0; j<myLibrary.length; ++j){
+        let itm = myLibrary[j];
+        addRow(itm, j);
       }
 
   }
@@ -84,9 +115,11 @@ function addBookToLibrary(myLibrary) {
 
   const displayBut = document.querySelector('.disp');
   displayBut.addEventListener("click", () => {
-    displayT(myLibrary);
+    displayT();
 
   });
+  
+  
 
 
   /*
@@ -124,7 +157,10 @@ function addBookToLibrary(myLibrary) {
     const checkboxes = document.querySelectorAll('.checkbox:checked');
     Array.prototype.forEach.call(checkboxes, function(checkbox) {
      let tdCheck = checkbox.parentElement;
+     let idx = Number(tdCheck.className.replace(/\D+/g, ''));
+     console.log(idx);
      tdCheck.parentElement.remove();
+     myLibrary.splice(idx, 1);
     });
  }
 
@@ -164,17 +200,19 @@ function addRemButton(){
 
   })
 
-  function addRow(item){
+  function addRow(item, id){
 
     const bodyEl = document.querySelector('.tableBody');
-    const trEl = document.createElement('tr');
 
-    if(!myLibrary.length){
+    const trEl = document.createElement('tr');
+    trEl.classList.add("td_" + id);
+
+    /*if(!myLibrary.length){
         trEl.classList.add("td_0");
       }
-      else {
+    else {
         trEl.classList.add("td_" + myLibrary.length)
-      }
+      }*/
     
 
     for(let i=0; i<6; ++i){
@@ -202,20 +240,21 @@ function addRemButton(){
         trEl.appendChild(newtd);
       }
       else if(i==4){
-        newtd.textContent = readText(item.read);
-        //newtd.textContent = item.read;
+        //newtd.textContent = readText(item.read);
+        newtd.textContent = item.read;
         trEl.appendChild(newtd);
       }
       else if(i==5){
         const editBut = document.createElement('input');
         editBut.setAttribute("type", "button");
         editBut.setAttribute("value", "edit");
-        if (!myLibrary.length){
+        editBut.classList.add('editButton');
+        /*if (!myLibrary.length){
           editBut.classList.add('_0');
         }
         else{
           editBut.classList.add("_" + myLibrary.length);
-        }
+        }*/
         trEl.appendChild(editBut);
       }
 
@@ -230,7 +269,8 @@ function addRemButton(){
 
   submitBut.addEventListener("click", () => {
     item = addBookToLibrary(myLibrary);
-    addRow(item);
+    displayT();
+    //addRow(item);
 
     let res = document.querySelector("form").reset();
     myForm.style.display = "none";
@@ -241,30 +281,50 @@ function addRemButton(){
   })
 
 function editRow(){
-    const editButtonEl = document.querySelector("._1");
-    editButtonEl.addEventListener("click", ()=>{
-      EmyForm.style.display = "block";
-    
-      let par = editButtonEl.parentElement;
-      let idx = Number(par.className.replace(/\D+/g, ''));
-      console.log(idx);
+    const AllEditButtons = document.querySelectorAll(".editButton");
+    Array.prototype.forEach.call(AllEditButtons, (editButtonEl) =>{
+      //const editButtonEl = document.querySelector("._1");
+      editButtonEl.addEventListener("click", ()=>{
+        
+        console.log(editButtonEl.parentElement.className);
+        EmyForm.style.display = "block";
       
+        let par = editButtonEl.parentElement;
+        let idx = Number(par.className.replace(/\D+/g, ''));
+        console.log(idx);
+        
+    
+        let Etitle = document.querySelector(".Etitle");
+        let Eauthor = document.querySelector(".Eauthor");
+        let Epages  = document.querySelector(".Epages");
+        //let e = document.querySelector("#Ereadstatus");
+        //let Eread = e.options[e.selectedIndex].text;
+        let Eread = document.querySelector(".Eread");
   
-      let Etitle = document.querySelector(".Etitle");
-      let Eauthor = document.querySelector(".Eauthor");
-      let Epages  = document.querySelector(".Epages");
-      let Eread = document.querySelector(".Eread");
+        Etitle.value = myLibrary[idx].title;
+        Eauthor.value =  myLibrary[idx].author;
+        Epages.value  =  myLibrary[idx].pages;
+        Eread.value = myLibrary[idx].read;
+    
+        const Espan = document.querySelector(".Eclose");
+        Espan.addEventListener("click", () =>{
+          EmyForm.style.display = "none";
+        })
 
-      Etitle.value = myLibrary[idx-1].title;
-      Eauthor.value =  myLibrary[idx-1].author;
-      Epages.value  =  myLibrary[idx-1].pages;
-      Eread.value = myLibrary[idx-1].read;
-  
-      const Espan = document.querySelector(".Eclose");
-      Espan.addEventListener("click", () =>{
-        EmyForm.style.display = "none";
+        const Esubmit = document.querySelector(".Esubbtn");
+        Esubmit.addEventListener("click", ()=>{
+          addBookToLibraryEdit(myLibrary, idx);
+          displayT();
+          //addRow(item);
+      
+          //let res = document.querySelector(".EmyForm").reset();
+          EmyForm.style.display = "none";
+          addRemButton();
+          editRow();
+        })
       })
-    })
+    });
+
 }
 
 
