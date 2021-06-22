@@ -29,6 +29,27 @@ function storageAvailable(type) {
 }
 
 
+Storage.prototype.setObj = function(key, obj) {
+  return this.setItem(key, JSON.stringify(obj))
+}
+Storage.prototype.getObj = function(key) {
+  return JSON.parse(this.getItem(key))
+}
+
+/*window.addEventListener('load', (event) => {
+  if(!localStorage.getItem('library')) {
+    displayT();
+  } 
+});*/
+
+
+window.onload = function() {
+  if(JSON.parse(localStorage.getItem("library"))) {
+    displayT();
+  } 
+};
+
+
 if (storageAvailable('localStorage')) {
     // Yippee! We can use localStorage awesomeness
     console.log("Yes");
@@ -37,6 +58,8 @@ if (storageAvailable('localStorage')) {
     // Too bad, no localStorage for us
     console.log("no");
   }
+
+
 
 
 function Book(title, author, pages, read){
@@ -71,6 +94,11 @@ function addBookToLibrary(myLibrary) {
    let read = document.querySelector(".read").value;
     let item = new Book(title, author, pages, read);
     myLibrary.push(item);
+
+    localStorage.setItem("library", JSON.stringify(myLibrary));
+    //localStorage.setObj("library", myLibrary);
+    
+
     return item;
     
   }
@@ -103,7 +131,8 @@ function addBookToLibrary(myLibrary) {
       const containerRem = document.querySelector('.tableBody');
       removeAllChildNodes(containerRem);
 
-
+      let myLibrary = JSON.parse(localStorage.getItem("library"));
+      //let myLibrary = localStorage.getObj("library");
       for(let j=0; j<myLibrary.length; ++j){
         let itm = myLibrary[j];
         addRow(itm, j);
