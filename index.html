@@ -9,20 +9,22 @@
 
     <style>
         html, body{
-        font: sans-serif;
-        max-height: 100%;
-        max-width: 100%;
-        overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            max-height: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            background-color:grey;
         }
 
 
 
         .container{
             display: grid;
-            grid-template-columns: 1fr 3fr;
+            grid-template-columns: 1fr 4fr;
             /*grid-template-rows: repeat(3, 1fr);
             width: 100vw;
             height: 100vh;*/
+            /*column-gap: 5px;*/
         }
 
         .left-bar{
@@ -30,6 +32,7 @@
             /*grid-row: 1 / 4;*/
             background-color: rgb(244, 177, 131); 
             border: 1px solid black;
+            border-radius: 20px;
         }
 
         .main-content{
@@ -37,6 +40,7 @@
             /*grid-row: 1/4;*/
             background-color:rgb(210, 221, 241);
             display: grid;
+            border-radius: 20px;
         
         }
 
@@ -45,7 +49,7 @@
         /* Left Bar parts */
         .left-bar-items{
             display: grid;
-            grid-template-rows: 1fr 2fr 1fr;
+            grid-template-rows: 1fr 4fr 1fr;
             height: 100vh;
         }
         
@@ -58,13 +62,16 @@
 
         .book-img{
             padding-right: 20px;
+            padding-left:10px;
             width:50px;
             height:50px;
         }
 
         .project-desc{
             grid-row: 2;
+            font-size: 16px;
             /*grid-row: 1 / 4;*/
+            padding-left: 10px;
         }
 
         .footer-created{
@@ -72,6 +79,7 @@
             flex-direction: column;
             margin-top: auto;
             justify-self: flex-start;
+            padding-left: 10px;
 
             /*grid-row: 1 / 4;*/
         } 
@@ -89,6 +97,11 @@
             /*justify-content:flex-end;*/
             /*align-self: space-between;*/
             padding: 0 5% 0 5%;
+        }
+
+        .add-item{
+            padding-left: 50px;
+            padding-top: 12px;
         }
 
         /*table */
@@ -125,6 +138,7 @@
             height: 550px;
             overflow-x: hidden;
             overflow-y: auto;
+            border-bottom: double;
         }
         thead, tbody tr {
             display: table;
@@ -142,6 +156,22 @@
             align-items: flex-end;
             padding-right: 4.5%;
         }
+        .edit_button{
+            cursor: pointer;
+            color: black;
+            background-color: lightblue;
+            border-radius: 20px;
+
+        }
+
+        .delete-btn-all{
+            background-color: red;
+            cursor: pointer;
+            color: white;
+            height: 40px;
+            /*width: 40px;*/
+        }
+
 
 
         /*Do the hidden form*/
@@ -186,6 +216,14 @@
             cursor: pointer;
         }
 
+        input:hover, 
+        .add-item-img:hover,
+        .delete_img:hover{
+            transform: scale(1.1);
+        }
+
+
+
 
     </style>
 
@@ -202,7 +240,7 @@
                     </div>
                     <div class="project-desc js-project-desc">
                         <p>This is a book library created as part of the Odin Project. </p>
-                        <p>This project uses local storage to store the data</p>
+                        <p>This project uses local storage to store the data.</p>
                     </div>
                     <div class="footer-created js-footer-created">
                         <p>Created by Vaxe1066</p>
@@ -214,7 +252,7 @@
             <div class="main-content js-main-content"> <!-- Main content where table will go-->
                 <div class="main-content-items js-main-content-items">
                     <div class="add-item js-add-item">
-                        <a class="add-item-img js-add-item-img" title="Add Item" href="#"><img src="Plus.png" style="width:50px;height:50px;" ></a>
+                        <a class="plus-img js-plus-img" title="Add Item" href="#"><img class="add-item-img js-add-item-img" src="icons8-plus-math-96.png" style="width:50px;height:50px;" ></a>
                     </div>
                     <div class="main-table js-main-table">
                         <table class="outputData">
@@ -233,7 +271,7 @@
                           </table>
                     </div>
                     <div class="delete-button js-delete-button">
-                        <input class="delete-btn js-delete-btn" type="button" value="Delete All">
+                        <input class="delete-btn-all js-delete-btn-all" type="button" value="Delete All">
                     </div>
                 </div>
             </div><!--End Main Content-->

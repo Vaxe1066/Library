@@ -18,7 +18,7 @@ Book.prototype.info = function() {
 
 /*create add event listner to add items button for the form to appear */
 const myForm = document.querySelector(".js-my-form");
-const addItem = document.querySelector(".js-add-item");
+const addItem = document.querySelector(".js-add-item-img");
 const closeBtn = document.querySelector(".close");
 
 addItem.addEventListener("click", () =>{
@@ -54,12 +54,22 @@ function formReset(){
 function deleteButtonBuild() {
   const deleteImg = document.createElement('img');
   deleteImg.setAttribute("src", "icons8-delete-bin-48.png");
+  deleteImg.classList.add("delete_img")
   const deleteAnchor = document.createElement("a");
   deleteAnchor.setAttribute("title", "Delete Entry");
   deleteAnchor.setAttribute("href", "#");
-  deleteAnchor.classList.add("delete-btn");
+  deleteAnchor.classList.add("delete_btn");
   deleteAnchor.appendChild(deleteImg);
   return deleteAnchor;
+}
+
+function editButtonBuild(){
+  const editButton = document.createElement("input");
+  editButton.setAttribute("type", "button");
+  editButton.setAttribute("title", "Click This To Change Read Status");
+  editButton.classList.add("edit_button");
+  return editButton;
+
 }
 
 
@@ -84,13 +94,17 @@ function addRow(item, id){
       trElement.appendChild(newtd);
     }
     else if(i==3){
-      newtd.textContent = item.read;
+      //newtd.textContent = item.read;
+      editButton = editButtonBuild();
+      editButton.setAttribute("value",`${item.read}` )
+      newtd.appendChild(editButton);
       trElement.appendChild(newtd);
     }
 
     else if(i==4){
       deleteAnchor = deleteButtonBuild();
-      trElement.appendChild(deleteAnchor);
+      newtd.appendChild(deleteAnchor);
+      trElement.appendChild(newtd);
     }
 
     tableBody.appendChild(trElement);
@@ -101,8 +115,10 @@ function addRow(item, id){
 
 /* remove all child nodes for table body - fresh for display */
 function removeAllChildNodes(parent) {
-  while (parent.firstChild) {
+  if(parent.firstChild){
+    while (parent.firstChild) {
       parent.removeChild(parent.firstChild);
+   }
   }
 }
 
@@ -119,13 +135,7 @@ function displayTable(){
 }
 
 
-/**** on load of page display local storage if exists */
-window.onload = function() {
-  if(JSON.parse(localStorage.getItem("library"))) {
-    displayTable();
-    
-  } 
-};
+
 
   
 /* add event listener - on submit of form add to library */
@@ -140,9 +150,104 @@ submitBut.addEventListener("click", () => {
   addBookToLibrary(myLibrary, title, author, pages, checkBox);
   formReset();
   displayTable();
+  removeEntry();
+  editButtonFnc();
   
 
 })
+
+
+
+
+/*** Add event listner to delete entry***/
+
+function removeEntry(){
+  const deleteItems = document.querySelectorAll(".delete_btn");
+  deleteItems.forEach(element => {
+    element.addEventListener("click", ()=>{
+      let tdCheck = element.parentElement;
+      let idx = Number(tdCheck.className.replace(/\D+/g, ''));
+      let conf = confirm("Are you sure you want to PERMANENTLY delete this entry?");
+      if(conf){
+        tdCheck.remove();
+        myLibrary.splice(idx, 1);
+        localStorage.setItem("library", JSON.stringify(myLibrary));
+        displayTable();
+        editButtonFnc();
+        removeEntry();
+      }
+
+    })
+
+});
+
+}
+
+
+
+/* add event listner for delete all button */
+const deleteAll = document.querySelector(".js-delete-btn-all");
+deleteAll.addEventListener("click", ()=> {
+  let conf = confirm("Are you sure you want to permanently delete all entries?");
+  if(conf){
+    myLibrary=[];
+    localStorage.setItem("library", JSON.stringify(myLibrary));
+    displayTable();
+  }
+
+})
+
+
+
+/* add event listner for edit button */
+
+// function to change read status
+
+function changeRead(newItem){
+  if(newItem.read=="Read"){
+    newItem.read = "Not Read Yet";
+  }
+  else if(newItem.read=="Not Read Yet"){
+    newItem.read="Read";
+  }
+
+  return newItem;
+
+}
+
+function editButtonFnc(){
+  const editAll = document.querySelectorAll(".edit_button");
+  editAll.forEach(element =>{
+    element.addEventListener("click", () => {
+      let tdCheck = element.parentElement;
+      let idx = Number(tdCheck.parentElement.className.replace(/\D+/g, ''));
+      console.log(idx);
+      myLibrary = JSON.parse(localStorage.getItem("library"));
+      let newItem = myLibrary[idx];
+      newItem = changeRead(newItem);
+      myLibrary[idx]=newItem;
+      element.setAttribute("value",`${newItem.read}`)
+      localStorage.setItem("library", JSON.stringify(myLibrary));
+    })
+  })
+}
+
+
+
+
+//localStorage.setItem("library", JSON.stringify(myLibrary));
+
+
+/**** on load of page display local storage if exists */
+window.onload = function() {
+  if(JSON.parse(localStorage.getItem("library"))) {
+    displayTable();
+    removeEntry();
+    editButtonFnc();
+    
+  } 
+};
+
 
 
 
