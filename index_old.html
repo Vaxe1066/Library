@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="#">
+  <title>My Library</title>
+  <meta charset="UTF-8"/>
+</head>
+
+  <style>
+    html, body{
+      display: flex;
+      flex-direction: column;
+      font: sans-serif;
+      max-height: 100%;
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .container{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .text_head{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: sticky;
+      top: 0;
+
+    }
+
+    .titleLine{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .bookImg{
+      padding-right: 10px;
+    }
+
+    .stg_opt{
+      display: flex;
+      flex-direction: row;
+      justify-items: flex-end;
+      /*padding: 0 0 0 auto;*/
+      margin: 0 0 0 auto;
+
+    }
+
+
+    .myForm, .EmyForm{
+      display: none;
+      position: fixed; /* Stay in place */
+      z-index: 1;  /*Sit on top */ 
+      padding-top: 400px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+
+
+
+    .form-content, .Eform-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .middleTable{
+      display: flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      align-self: space-between;
+      padding: 0 25% 0 25%;
+
+      
+    }
+
+    tbody {
+        display: block;
+        height: 500px;
+        overflow: auto;
+    }
+    thead, tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;/* even columns width , fix width of table too*/
+    }
+    thead {
+        width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+    }
+    /*table {
+        width: 400px;
+    }*/
+
+    .outputAll{
+      overflow-x: hidden;
+      overflow-y: hidden;
+      border-top: double;
+      border-bottom: double;
+    }
+
+    table {
+      display: table;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      white-space: wrap;
+
+
+    }
+
+
+    table thead tr th{
+    border-bottom: 1px solid #000000;
+}
+    /*table th, table td {
+        border-left: 1px solid rgba(0,0,0,0.2);
+        border-right: 1px solid rgba(0,0,0,0.2);
+    }*/
+    table th, table td{ /* Added padding for better layout after collapsing */
+        padding: 4px 8px;
+    }
+
+   /* section > * {
+      display: table-row;
+
+      
+    }*/
+
+    table td {
+      display: table-cell;
+    }
+
+
+
+    /* The Close Button */
+    .close, .Eclose {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus,
+    .Eclose:hover,
+    .Eclose:focus  {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .rem, .disp{
+      display: none;
+    }
+
+
+
+  </style>
+
+
+
+
+<body >
+
+  <div class="container">
+    <div class="text_head">
+      <div class="titleLine">
+        <img class="bookImg" src="book_PNG51090.png" style="width:30px;height:30px;"> 
+        <h1>My Book Library</h1>
+      </div>
+      <div class=stg_opt>
+        <form class="storageOption" onsubmit="return false;">
+          <label for="storageOptionS">Choose a Storage Option:</label>
+      
+          <select name="storageOptionS" id="places">
+            <option value="local">Local Storage</option>
+            <option value="cloud">Cloud Storage</option>
+          </select>
+      
+          <input type="submit" class="submitStorage" value="Submit">
+        </form>
+      </div>
+    </div>
+    <div class="desc">
+      <h3>This is an application which allows you to store information about the books you have read.</h3>
+      <!--<p>You have two options: 1) Local Storage, 2) Cloud Storage</p>-->
+    </div>
+    <!--<div class="storage">
+      <input class="local" type="button" value="Local">
+      <input class="cloud" type="button" value="Storage">
+    </div>-->
+
+    <div class="middleTable" >
+      <div class="addItemDiv">
+        <!--<input class="addItem" type="button" value="Add Item">-->
+        <a title="Add Item" href="#"><img id="addItem" class="addItem" src="Plus.png" style="width:25px;height:25px;" ></a>
+        
+      </div>
+
+        <!-- The Form -->
+        <div id="myForm" class="myForm">
+          <!-- Form content -->
+          <div class="form-content">
+            <span class="close">&times;</span>
+            <form class="theForm" onsubmit="return false;">
+              <label for="ltitle">Title</label><br>
+              <input type="text" class="title" name="ltitle" value=""><br><br>
+              <label for="lauthor">Author</label><br>
+              <input type="text" class="author" name="lauthor" value=""><br><br>
+              <label for="lpages">Pages</label><br>
+              <input type="text" class="pages" name="lpages" value=""><br><br>
+              <label for="lread">Read Status</label><br>
+              <input type="text" class="read" name="read" placeholder="'Read' or 'Not Read Yet'" value=""><br><br>
+              <!--<select id="readstatus" name="readstatus">
+                <option class="1" value="Read">Read</option>
+                <option class="2" value="Not Read Yet">Not Read Yet</option>
+              </select><br><br>-->
+              <input type="submit" class="subbtn" value="Submit">
+            </form> 
+          </div>
+
+        </div>
+      
+        <div id="EmyForm" class="EmyForm">
+
+          <!-- Form content -->
+          <div class="Eform-content">
+            <span class="Eclose">&times;</span>
+            <form class="EtheForm" onsubmit="return false;">
+              <label for="Eltitle">Title</label><br>
+              <input type="text" class="Etitle" name="ltitle" value=""><br><br>
+              <label for="Elauthor">Author</label><br>
+              <input type="text" class="Eauthor" name="Elauthor" value=""><br><br>
+              <label for="Elpages">Pages</label><br>
+              <input type="text" class="Epages" name="Elpages" value=""><br><br>
+              <label for="Elread">Read Status</label><br>
+              <input type="text" class="Eread" name="Eread" placeholder="'Read' or 'Not Read Yet'" value=""><br><br>
+              <!--<select id="Ereadstatus" name="Ereadstatus">
+                <option class="E1" value="Read">Read</option>
+                <option class="E2" value="Not Read Yet">Not Read Yet</option>
+              </select><br><br>-->
+              <input type="submit" class="Esubbtn" value="Submit">
+            </form> 
+          </div>
+
+        </div>
+
+      <div class="outputAll">
+        <table class="outputData">
+          <thead>
+            <tr class="headname">
+              <th>Select</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Pages</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody class="tableBody">
+          </tbody>
+        </table>
+      </div>
+      <input class="disp" type="button" value="Display">
+      <input class="rem" type="button" value="Remove">
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+      
+
+
+    <script src=script_LS.js>
+
+
+    </script> 
+
+  </body>
+
+
+</html>

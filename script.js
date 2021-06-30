@@ -1,113 +1,152 @@
+
 let myLibrary = [];
-
-
-
-
+ 
+/*Create my book constructor here*/
 function Book(title, author, pages, read){
-    this.title = title
-    this.author = author
-    this.pages=pages
-    this.read=read
-    readText = function() {
-        if(read=="1"){
-            return "read";
-        }
-        else{
-            return "not read yet";
-        }
-    }
-    this.info = function(){
-        return `${title} by ${author}, ${pages} pages, ${readText()}`;
-    }
+  this.title = title
+  this.author = author
+  this.pages=pages
+  this.read=read
+}
+
+/*use prototype to create a function which returns information */
+Book.prototype.info = function() {
+  return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`;
 }
 
 
 
+/*create add event listner to add items button for the form to appear */
+const myForm = document.querySelector(".js-my-form");
+const addItem = document.querySelector(".js-add-item");
+const closeBtn = document.querySelector(".close");
+
+addItem.addEventListener("click", () =>{
+  myForm.style.display = "block";
+})
+
+closeBtn.addEventListener("click", () =>{
+  myForm.style.display = "none";
+})
 
 
-function addBookToLibrary(myLibrary) {
-    let title= document.querySelector(".title").value;
-    let author = document.querySelector(".author").value;
-    let pages = document.querySelector(".pages").value;
-    let read = document.querySelector(".read").value;
-    let item = new Book(title, author, pages, read);
-    myLibrary.push(item);
+/*add book the library function */
+function addBookToLibrary(myLibrary, title, author, pages, checkBox) {
+  let read="";
+  if (checkBox.checked){
+    read = "Read"
+  }
+  else{
+    read = "Not Read Yet"
+  }
+  //let read = document.querySelector(".read").value;
+  let item = new Book(title, author, pages, read);
+  myLibrary.push(item);
+  localStorage.setItem("library", JSON.stringify(myLibrary));
+}
+
+/* reset and close form after display function */
+function formReset(){
+  let res = document.querySelector(".js-the-form").reset();
+  myForm.style.display = "none";
+}
+
+function deleteButtonBuild() {
+  const deleteImg = document.createElement('img');
+  deleteImg.setAttribute("src", "icons8-delete-bin-48.png");
+  const deleteAnchor = document.createElement("a");
+  deleteAnchor.setAttribute("title", "Delete Entry");
+  deleteAnchor.setAttribute("href", "#");
+  deleteAnchor.classList.add("delete-btn");
+  deleteAnchor.appendChild(deleteImg);
+  return deleteAnchor;
+}
+
+
+/* add row to the DOM function to be used in the display function */
+function addRow(item, id){
+  const tableBody = document.querySelector(".js-table-body");
+  const trElement = document.createElement('tr');
+  trElement.classList.add("td-" + id);
+
+  for(let i=0; i<5; ++i){
+    const newtd = document.createElement('td');
+    if(i==0){
+      newtd.textContent = item.title;
+      trElement.appendChild(newtd);
+    }
+    else if(i==1){
+      newtd.textContent = item.author;
+      trElement.appendChild(newtd);
+    }
+    else if(i==2){
+      newtd.textContent = item.pages;
+      trElement.appendChild(newtd);
+    }
+    else if(i==3){
+      newtd.textContent = item.read;
+      trElement.appendChild(newtd);
+    }
+
+    else if(i==4){
+      deleteAnchor = deleteButtonBuild();
+      trElement.appendChild(deleteAnchor);
+    }
+
+    tableBody.appendChild(trElement);
+  }
+}
+
+
+
+/* remove all child nodes for table body - fresh for display */
+function removeAllChildNodes(parent) {
+  while (parent.firstChild) {
+      parent.removeChild(parent.firstChild);
+  }
+}
+
+function displayTable(){
+  const containerRem = document.querySelector('.js-table-body');
+  removeAllChildNodes(containerRem);
+
+  myLibrary = JSON.parse(localStorage.getItem("library"));
+  //let myLibrary = localStorage.getObj("library");
+  for(let j=0; j<myLibrary.length; ++j){
+    let itm = myLibrary[j];
+    addRow(itm, j);
+  }
+}
+
+
+/**** on load of page display local storage if exists */
+window.onload = function() {
+  if(JSON.parse(localStorage.getItem("library"))) {
+    displayTable();
     
-  }
+  } 
+};
 
+  
+/* add event listener - on submit of form add to library */
+const submitBut = document.querySelector(".js-submit-btn");
+submitBut.addEventListener("click", () => {
+  let title= document.querySelector(".title").value;
+  let author = document.querySelector(".author").value;
+  let pages = document.querySelector(".pages").value;
+  /*Do checkbox for read */
+  let checkBox = document.querySelector(".checkbox");
 
-  function displayT(myLibrary){
-      for(let i=0; i<myLibrary.length; ++i){
-           alert(myLibrary[i].title);
-      }
-
-  }
-
-
-
-
-
-  const displayBut = document.querySelector('.disp');
-  displayBut.addEventListener("click", () => {
-    displayT(myLibrary);
-
-  });
-  /*
-  const addItemBut = document.querySelector('.addItem');
-  addItemBut.addEventListener("click", () =>{
-    addBookToLibrary(myLibrary);
-  })  */
-
-
-
-
-  const myForm = document.querySelector(".myForm");
-  const myBut = document.querySelector(".addItem");
-  const span = document.querySelector(".close");
-  const submitBut = document.querySelector(".subbtn")
+  addBookToLibrary(myLibrary, title, author, pages, checkBox);
+  formReset();
+  displayTable();
   
 
-  myBut.addEventListener("click", () =>{
-    myForm.style.display = "block";
-  })
-
-  span.addEventListener("click", () =>{
-    myForm.style.display = "none";
-  })
+})
 
 
 
 
-  submitBut.addEventListener("click", () => {
-    addBookToLibrary(myLibrary);
-    //alert(myLibrary[0].info());
-    displayT(myLibrary);
-    //let res = document.querySelector("form").reset();
-    //myForm.style.display = "none";
-  })
 
 
 
-
-//const window=document.querySelector("body");
-
-
-// When the user clicks anywhere outside of the modal, close it
-/*window.addEventListener("click", function(event) {
-  if (event.target == myForm) {
-    myForm.style.display = "none";
-  }
-})*/
-
-
-
-/*item = new Book('The Hobbit', 'Tolkein', 295, 0);
-const item1 = new Book('LOTR', 'Tolkein', 1000, 0);
-const item2 = new Book('Brave New World', 'Huxley', 372, 1);
-
-myLibrary.push(item, item1, item2);*/
-
-
-//console.log(item.info());
-
-//addBookToLibrary(myLibrary);
