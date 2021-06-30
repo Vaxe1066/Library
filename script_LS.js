@@ -1,5 +1,5 @@
 let myLibrary = [];
-
+ 
 
 /* Storgae Functions */
 
@@ -42,12 +42,15 @@ Storage.prototype.getObj = function(key) {
   } 
 });*/
 
-
+/*
 window.onload = function() {
   if(JSON.parse(localStorage.getItem("library"))) {
     displayT();
+    myLibrary = JSON.parse(localStorage.getItem("library"));
+    editRow();
+    addRemButton();
   } 
-};
+};*/
 
 
 if (storageAvailable('localStorage')) {
@@ -59,6 +62,28 @@ if (storageAvailable('localStorage')) {
     console.log("no");
   }
 
+
+let storage;
+
+
+
+const storageForm = document.querySelector(".storageOption");
+//storageForm.style.display = "block";
+
+const submitStorage = document.querySelector(".submitStorage");
+submitStorage.addEventListener("click", ()=>{
+  let input = document.querySelector("#places");
+  storage = input.value;
+  console.log(storage);
+  //storageForm.style.display = "none";
+
+  if(JSON.parse(localStorage.getItem("library")) && storage=="local") {
+    displayT();
+    myLibrary = JSON.parse(localStorage.getItem("library"));
+    editRow();
+    addRemButton();
+  } 
+})
 
 
 
@@ -113,7 +138,8 @@ function addBookToLibrary(myLibrary) {
     let read = document.querySelector(".Eread").value;
     let item = new Book(title, author, pages, read);
     myLibrary[idx] = item;
-    return item;
+    localStorage.setItem("library", JSON.stringify(myLibrary));
+    //return myLibrary;
     
   }
 
@@ -131,11 +157,12 @@ function addBookToLibrary(myLibrary) {
       const containerRem = document.querySelector('.tableBody');
       removeAllChildNodes(containerRem);
 
-      let myLibrary = JSON.parse(localStorage.getItem("library"));
+      myLibrary = JSON.parse(localStorage.getItem("library"));
       //let myLibrary = localStorage.getObj("library");
       for(let j=0; j<myLibrary.length; ++j){
         let itm = myLibrary[j];
         addRow(itm, j);
+        console.log(itm);
       }
 
   }
@@ -180,8 +207,6 @@ function addBookToLibrary(myLibrary) {
 
 
 
-
-
   function remove() {
     const checkboxes = document.querySelectorAll('.checkbox:checked');
     Array.prototype.forEach.call(checkboxes, function(checkbox) {
@@ -191,6 +216,9 @@ function addBookToLibrary(myLibrary) {
      tdCheck.parentElement.remove();
      myLibrary.splice(idx, 1);
     });
+
+    localStorage.setItem("library", JSON.stringify(myLibrary));
+
  }
 
  const removeBut = document.querySelector('.rem');
@@ -250,11 +278,12 @@ function addRemButton(){
       
 
       if(i==0){
-        const inputEl = document.createElement('input');
+        let inputEl = document.createElement('input');
         inputEl.setAttribute("type", "checkbox");
         inputEl.classList.add('checkbox');
         newtd.appendChild(inputEl);
         trEl.appendChild(newtd);
+        
       }
       else if(i==1){
         newtd.textContent = item.title;
@@ -274,17 +303,18 @@ function addRemButton(){
         trEl.appendChild(newtd);
       }
       else if(i==5){
-        const editBut = document.createElement('input');
+        let editBut = document.createElement('input');
         editBut.setAttribute("type", "button");
         editBut.setAttribute("value", "edit");
         editBut.classList.add('editButton');
+        newtd.appendChild(editBut);
         /*if (!myLibrary.length){
           editBut.classList.add('_0');
         }
         else{
           editBut.classList.add("_" + myLibrary.length);
         }*/
-        trEl.appendChild(editBut);
+        trEl.appendChild(newtd);
       }
 
       bodyEl.appendChild(trEl);
@@ -301,7 +331,7 @@ function addRemButton(){
     displayT();
     //addRow(item);
 
-    let res = document.querySelector("form").reset();
+    let res = document.querySelector(".theForm").reset();
     myForm.style.display = "none";
     addRemButton();
     editRow();
@@ -314,12 +344,10 @@ function editRow(){
     Array.prototype.forEach.call(AllEditButtons, (editButtonEl) =>{
       //const editButtonEl = document.querySelector("._1");
       editButtonEl.addEventListener("click", ()=>{
-        
-        console.log(editButtonEl.parentElement.className);
         EmyForm.style.display = "block";
       
         let par = editButtonEl.parentElement;
-        let idx = Number(par.className.replace(/\D+/g, ''));
+        let idx = Number(par.parentElement.className.replace(/\D+/g, ''));
         console.log(idx);
         
     
@@ -342,14 +370,13 @@ function editRow(){
 
         const Esubmit = document.querySelector(".Esubbtn");
         Esubmit.addEventListener("click", ()=>{
+          
           addBookToLibraryEdit(myLibrary, idx);
+          for(let i=0; i<=myLibrary.length; ++i){
+            console.log(myLibrary[i])
+          }
           displayT();
-          //addRow(item);
-      
-          //let res = document.querySelector(".EmyForm").reset();
           EmyForm.style.display = "none";
-          addRemButton();
-          editRow();
         })
       })
     });
